@@ -1,10 +1,30 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+import 'dart:math';
 
-class LoginScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:penjualan_app/app/login/bloc/login_bloc.dart';
+import 'package:penjualan_app/models/helper.dart';
+
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    DBHelper.truncateData(Objectbox.store_);
+    DBHelper.putUser(Objectbox.store_);
+    DBHelper.putProduct(Objectbox.store_);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    LoginBloc bloc = BlocProvider.of<LoginBloc>(context);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -14,32 +34,51 @@ class LoginScreen extends StatelessWidget {
             'LOGIN',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
-            child: Column(
-              children: const [
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                  ),
+          BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              return Visibility(
+                  visible: state is LoginError,
+                  child: const Text(
+                    'Wrong Username / Password',
+                    style: TextStyle(color: Colors.redAccent),
+                  ));
+            },
+          ),
+          BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: state.usernameTEC,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Username',
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: state.passwordTEC,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 15),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
           SizedBox(
               width: 200,
               height: 40,
               child: ElevatedButton(
-                onPressed: () => 1,
+                onPressed: () => bloc.add(Login(
+                    username: bloc.state.usernameTEC.text,
+                    password: bloc.state.passwordTEC.text)),
                 style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                 child: const Text(
                   'LOGIN',

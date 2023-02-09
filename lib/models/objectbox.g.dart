@@ -12,42 +12,68 @@ import 'dart:typed_data';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 import 'package:objectbox/internal.dart'; // generated code can access "internal" functionality
 import 'package:objectbox/objectbox.dart';
+import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../models/product.dart';
+import '../models/user.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 7204005025030667894),
+      id: const IdUid(1, 1081786659440235962),
       name: 'Product',
-      lastPropertyId: const IdUid(5, 1922959172242957773),
+      lastPropertyId: const IdUid(5, 8744539542332162886),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8730520816247257330),
+            id: const IdUid(1, 1150048051132244381),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 8733512195846004202),
+            id: const IdUid(2, 7295144014779589347),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 157909437679251942),
+            id: const IdUid(3, 4169711728712255662),
             name: 'price',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 3091969186876411175),
+            id: const IdUid(4, 7172573285284137204),
             name: 'discountPrice',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 1922959172242957773),
+            id: const IdUid(5, 8744539542332162886),
             name: 'isDiscount',
             type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 4936758195899307098),
+      name: 'User',
+      lastPropertyId: const IdUid(3, 6603873470916570272),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 1201977024229092418),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 2162400668656021079),
+            name: 'username',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 6603873470916570272),
+            name: 'password',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -55,15 +81,15 @@ final _entities = <ModelEntity>[
 ];
 
 /// Open an ObjectBox store with the model declared in this file.
-Store openStore(
+Future<Store> openStore(
         {String? directory,
         int? maxDBSizeInKB,
         int? fileMode,
         int? maxReaders,
         bool queriesCaseSensitiveDefault = true,
-        String? macosApplicationGroup}) =>
+        String? macosApplicationGroup}) async =>
     Store(getObjectBoxModel(),
-        directory: directory,
+        directory: directory ?? (await defaultStoreDirectory()).path,
         maxDBSizeInKB: maxDBSizeInKB,
         fileMode: fileMode,
         maxReaders: maxReaders,
@@ -74,7 +100,7 @@ Store openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 7204005025030667894),
+      lastEntityId: const IdUid(2, 4936758195899307098),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -121,6 +147,37 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 12));
 
           return object;
+        }),
+    User: EntityDefinition<User>(
+        model: _entities[1],
+        toOneRelations: (User object) => [],
+        toManyRelations: (User object) => {},
+        getId: (User object) => object.id,
+        setId: (User object, int id) {
+          object.id = id;
+        },
+        objectToFB: (User object, fb.Builder fbb) {
+          final usernameOffset = fbb.writeString(object.username);
+          final passwordOffset = fbb.writeString(object.password);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, usernameOffset);
+          fbb.addOffset(2, passwordOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = User(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              username: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              password: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''));
+
+          return object;
         })
   };
 
@@ -146,4 +203,16 @@ class Product_ {
   /// see [Product.isDiscount]
   static final isDiscount =
       QueryBooleanProperty<Product>(_entities[0].properties[4]);
+}
+
+/// [User] entity fields to define ObjectBox queries.
+class User_ {
+  /// see [User.id]
+  static final id = QueryIntegerProperty<User>(_entities[1].properties[0]);
+
+  /// see [User.username]
+  static final username = QueryStringProperty<User>(_entities[1].properties[1]);
+
+  /// see [User.password]
+  static final password = QueryStringProperty<User>(_entities[1].properties[2]);
 }

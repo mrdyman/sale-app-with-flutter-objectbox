@@ -1,10 +1,13 @@
+import 'package:context_holder/context_holder.dart';
 import 'package:flutter/material.dart';
+import 'package:penjualan_app/app/login/bloc/login_bloc.dart';
 import 'package:penjualan_app/app/login/login_screen.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'models/helper.dart';
 
 late final Objectbox objectbox;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   objectbox = await Objectbox.create();
   runApp(const MyApp());
 }
@@ -15,11 +18,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: ContextHolder.key,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(),
+        child: const LoginScreen(),
+      ),
     );
   }
 }

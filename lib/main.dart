@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:penjualan_app/screen/login_screen.dart';
+import 'package:penjualan_app/app/login/login_screen.dart';
 
-void main() {
+import 'models/helper.dart';
+
+late final Objectbox objectbox;
+void main() async {
+  objectbox = await Objectbox.create();
   runApp(const MyApp());
 }
 

@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
 import 'package:context_holder/context_holder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:penjualan_app/app/product/bloc/product_bloc.dart';
 import 'package:penjualan_app/app/product/product_screen.dart';
 import 'package:penjualan_app/models/helper.dart';
 import 'package:penjualan_app/models/user.dart';
@@ -20,8 +19,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await isGranted(username: event.username, password: event.password);
       if (loginSuccess && context.mounted) {
         emit(LoginSuccess());
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const ProductScreen()));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BlocProvider<ProductBloc>(
+                      create: (context) => ProductBloc(),
+                      child: const ProductScreen(),
+                    )));
       } else {
         emit(LoginError());
       }

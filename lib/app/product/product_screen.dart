@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penjualan_app/components/product_item.dart';
+
+import 'bloc/product_bloc.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
@@ -13,16 +16,20 @@ class ProductScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const ProductItem(
-                      productName: "So Klin Pewangi",
-                      isDiscount: true,
-                      productRealPrice: 15000,
-                      productDiscountPrice: 13000,
-                    );
-                  }),
+              child: BlocBuilder<ProductBloc, ProductState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return const ProductItem(
+                          productName: "So Klin Pewangi",
+                          isDiscount: true,
+                          productRealPrice: 15000,
+                          productDiscountPrice: 13000,
+                        );
+                      });
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 18),

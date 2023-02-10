@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penjualan_app/components/product_item.dart';
+import 'package:penjualan_app/models/product.dart';
 
 import 'bloc/product_bloc.dart';
 
@@ -9,6 +10,8 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProductBloc bloc = BlocProvider.of<ProductBloc>(context);
+    bloc.add(GetProduct());
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -18,16 +21,29 @@ class ProductScreen extends StatelessWidget {
             Expanded(
               child: BlocBuilder<ProductBloc, ProductState>(
                 builder: (context, state) {
-                  return ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return const ProductItem(
-                          productName: "So Klin Pewangi",
-                          isDiscount: true,
-                          productRealPrice: 15000,
-                          productDiscountPrice: 13000,
-                        );
-                      });
+                  return state is ProductLoaded
+                      ? ListView.builder(
+                          itemCount: state.products.length,
+                          itemBuilder: (context, index) {
+                            return ProductItem(
+                                productName: state.products[index].name,
+                                isDiscount:
+                                    state.products[index].isDiscount ?? false,
+                                productRealPrice: state.products[index].price,
+                                productDiscountPrice:
+                                    state.products[index].discountPrice,
+                                onTap: () => bloc
+                                    .add(DetailProduct(state.products[index])),
+                                onBuy: () {
+                                  bloc.add(AddProduct(state.products[index]));
+                                  var snackBar = SnackBar(
+                                      content: Text(
+                                          "${state.products[index].name} Berhasil ditambahkan!"));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                });
+                          })
+                      : const Center(child: CircularProgressIndicator());
                 },
               ),
             ),
@@ -36,7 +52,7 @@ class ProductScreen extends StatelessWidget {
               child: SizedBox(
                 height: 40,
                 child: ElevatedButton(
-                  onPressed: () => 1,
+                  onPressed: () => bloc.add(Checkout()),
                   style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   child: const Text(
                     'CHECKOUT',

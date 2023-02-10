@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:penjualan_app/models/product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  final Product product;
+  const ProductDetailScreen({required this.product, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +24,23 @@ class ProductDetailScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 25),
-          const Text(
-            'So Klin Pewangi',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          Text(
+            product.name,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 25),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 'Price',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Rp. 18.000,-',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                product.discountPrice != null
+                    ? "Rp. ${product.discountPrice},-"
+                    : "Rp. ${product.price},-",
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),

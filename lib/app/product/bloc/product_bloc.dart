@@ -6,6 +6,7 @@ import 'package:penjualan_app/app/login/login_screen.dart';
 import 'package:penjualan_app/app/product_detail/product_detail_screen.dart';
 import 'package:penjualan_app/models/helper.dart';
 import 'package:penjualan_app/models/product.dart';
+import 'package:penjualan_app/models/transaction_detail.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';
@@ -13,9 +14,34 @@ part 'product_state.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   BuildContext context = ContextHolder.currentContext;
   ProductBloc() : super(ProductInitial()) {
-    List<Product> products = [];
+    List<TransactionDetail> transactions = [];
     on<AddProduct>((event, emit) {
-      products.add(event.product);
+      try {
+        TransactionDetail transaction = transactions.firstWhere(
+            (element) => element.productCode == event.product.productCode);
+
+        int dataToRemove = transactions.indexWhere(
+            (element) => element.productCode == event.product.productCode);
+        //product already added, increase the quantity
+        TransactionDetail tmpData = transaction.copyWith(
+            quantity: transaction.quantity + 1,
+            subTotal: transaction.subTotal * 2);
+
+        transactions.removeAt(dataToRemove);
+        transactions.add(tmpData);
+      } catch (e) {
+        //product never added before
+        transactions.add(TransactionDetail(
+          documentCode: "DC001",
+          documentNumber: "DCN001",
+          productCode: event.product.productCode,
+          price: event.product.price - event.product.discount,
+          quantity: 1,
+          unit: event.product.unit,
+          subTotal: event.product.price - event.product.discount,
+          currency: event.product.currency,
+        ));
+      }
     });
 
     on<GetProduct>((event, emit) async {
@@ -31,14 +57,20 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
                   ProductDetailScreen(product: event.product)));
     });
 
-    on<Checkout>((event, emit) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CheckoutScreen(
-                    products: products,
-                  )));
+    on<Checkout>((event, emit) async {
+      List<Product> products = await getProducts();
+      moveToCheckout(transactions, products);
     });
+  }
+
+  moveToCheckout(List<TransactionDetail> transactions, List<Product> products) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CheckoutScreen(
+                  transactions: transactions,
+                  products: products,
+                )));
   }
 
   Future<List<Product>> getProducts() async {

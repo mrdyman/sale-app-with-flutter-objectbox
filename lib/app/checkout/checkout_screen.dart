@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:penjualan_app/models/transaction_detail.dart';
 
 import '../../models/product.dart';
 
 class CheckoutScreen extends StatefulWidget {
+  final List<TransactionDetail> transactions;
   final List<Product> products;
-  const CheckoutScreen({required this.products, super.key});
+  const CheckoutScreen(
+      {required this.transactions, required this.products, super.key});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  List<TransactionDetail> transactions = [];
   List<Product> products = [];
   late int totalPrice;
 
   @override
   void initState() {
+    transactions = widget.transactions;
     products = widget.products;
     countTotalPrice();
     super.initState();
@@ -23,8 +28,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   void countTotalPrice() {
     int tmpTotal = 0;
-    for (var element in products) {
-      tmpTotal += element.price - element.discount;
+    for (var element in transactions) {
+      tmpTotal += element.quantity > 1
+          ? element.price * element.quantity
+          : element.price;
     }
     totalPrice = tmpTotal;
   }
@@ -64,10 +71,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: widget.products.length,
+                itemCount: widget.transactions.length,
                 itemBuilder: (context, index) {
                   return buildItem(
-                      index: index, product: widget.products[index]);
+                      index: index,
+                      transaction: widget.transactions[index],
+                      product: widget.products.firstWhere((element) =>
+                          element.productCode ==
+                          widget.transactions[index].productCode));
                 }),
           ),
           const SizedBox(height: 20),
@@ -88,7 +99,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Padding buildItem({required int index, required Product product}) {
+  Padding buildItem({
+    required int index,
+    required TransactionDetail transaction,
+    required Product product,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 18),
       child: Row(
@@ -120,11 +135,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(border: Border.all()),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '1',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        transaction.quantity.toString(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -151,7 +166,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Rp. ${product.price - product.discount},-",
+                    "Rp. ${transaction.subTotal},-",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],

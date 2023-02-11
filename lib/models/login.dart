@@ -1,13 +1,13 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class User {
+class Login {
   @Id()
   int id;
   String username;
   String password;
 
-  User({
+  Login({
     this.id = 0,
     required this.username,
     required this.password,

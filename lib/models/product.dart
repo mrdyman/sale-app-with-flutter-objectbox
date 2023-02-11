@@ -4,15 +4,22 @@ import 'package:objectbox/objectbox.dart';
 class Product {
   @Id()
   int id;
-  String name;
+  String productCode;
+  String productName;
   int price;
-  int? discountPrice;
-  bool? isDiscount;
+  String currency;
+  int discount;
+  String dimension;
+  String unit;
 
-  Product(
-      {this.id = 0,
-      required this.name,
-      required this.price,
-      this.discountPrice,
-      this.isDiscount = false});
+  Product({
+    this.id = 0,
+    required this.productCode,
+    required this.productName,
+    required this.price,
+    required this.currency,
+    required this.discount,
+    required this.dimension,
+    required this.unit,
+  });
 }

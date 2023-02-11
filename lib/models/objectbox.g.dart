@@ -14,8 +14,10 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import '../models/login.dart';
 import '../models/product.dart';
-import '../models/user.dart';
+import '../models/transaction_detail.dart';
+import '../models/transaction_header.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -23,7 +25,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 1081786659440235962),
       name: 'Product',
-      lastPropertyId: const IdUid(5, 8744539542332162886),
+      lastPropertyId: const IdUid(11, 6435692739031318379),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -32,48 +34,156 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 7295144014779589347),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(3, 4169711728712255662),
             name: 'price',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 7172573285284137204),
-            name: 'discountPrice',
+            id: const IdUid(6, 1521397533749479997),
+            name: 'productCode',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 6092544334636962368),
+            name: 'productName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 8469461516391028677),
+            name: 'currency',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 5965275286176592682),
+            name: 'discount',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 8744539542332162886),
-            name: 'isDiscount',
-            type: 1,
+            id: const IdUid(10, 3079941603271913477),
+            name: 'dimension',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 6435692739031318379),
+            name: 'unit',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(2, 4936758195899307098),
-      name: 'User',
-      lastPropertyId: const IdUid(3, 6603873470916570272),
+      id: const IdUid(3, 7516870282468453976),
+      name: 'Login',
+      lastPropertyId: const IdUid(3, 3981285863211144504),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1201977024229092418),
+            id: const IdUid(1, 1934457641189532530),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 2162400668656021079),
+            id: const IdUid(2, 3218062203564283798),
             name: 'username',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 6603873470916570272),
+            id: const IdUid(3, 3981285863211144504),
             name: 'password',
             type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(4, 5646449229006603903),
+      name: 'TransactionDetail',
+      lastPropertyId: const IdUid(9, 1513236410224893424),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7952790518334329045),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 6514437814316026117),
+            name: 'documentCode',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2052601478324388662),
+            name: 'documentNumber',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7298863919933347366),
+            name: 'productCode',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 205350356302686952),
+            name: 'price',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 5687876666754329349),
+            name: 'quantity',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 930912774847376799),
+            name: 'unit',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 6547346031555261439),
+            name: 'subTotal',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 1513236410224893424),
+            name: 'currency',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(5, 3242178868327561877),
+      name: 'TransactionHeader',
+      lastPropertyId: const IdUid(6, 5075957564058221138),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 535060497390571005),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 5368443042147565265),
+            name: 'documentCode',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 8139056809193208024),
+            name: 'documentNumber',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6284666539667240469),
+            name: 'user',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 9129260421627051668),
+            name: 'total',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 5075957564058221138),
+            name: 'date',
+            type: 10,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -100,13 +210,20 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(2, 4936758195899307098),
+      lastEntityId: const IdUid(5, 3242178868327561877),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [4936758195899307098],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [
+        1201977024229092418,
+        2162400668656021079,
+        6603873470916570272,
+        7295144014779589347,
+        7172573285284137204,
+        8744539542332162886
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -122,13 +239,20 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Product object, fb.Builder fbb) {
-          final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(6);
+          final productCodeOffset = fbb.writeString(object.productCode);
+          final productNameOffset = fbb.writeString(object.productName);
+          final currencyOffset = fbb.writeString(object.currency);
+          final dimensionOffset = fbb.writeString(object.dimension);
+          final unitOffset = fbb.writeString(object.unit);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
           fbb.addInt64(2, object.price);
-          fbb.addInt64(3, object.discountPrice);
-          fbb.addBool(4, object.isDiscount);
+          fbb.addOffset(5, productCodeOffset);
+          fbb.addOffset(6, productNameOffset);
+          fbb.addOffset(7, currencyOffset);
+          fbb.addInt64(8, object.discount);
+          fbb.addOffset(9, dimensionOffset);
+          fbb.addOffset(10, unitOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -138,25 +262,31 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Product(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
+              productCode: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              productName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
               price: const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              discountPrice: const fb.Int64Reader()
-                  .vTableGetNullable(buffer, rootOffset, 10),
-              isDiscount: const fb.BoolReader()
-                  .vTableGetNullable(buffer, rootOffset, 12));
+              currency: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              discount:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0),
+              dimension: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 22, ''),
+              unit: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 24, ''));
 
           return object;
         }),
-    User: EntityDefinition<User>(
+    Login: EntityDefinition<Login>(
         model: _entities[1],
-        toOneRelations: (User object) => [],
-        toManyRelations: (User object) => {},
-        getId: (User object) => object.id,
-        setId: (User object, int id) {
+        toOneRelations: (Login object) => [],
+        toManyRelations: (Login object) => {},
+        getId: (Login object) => object.id,
+        setId: (Login object, int id) {
           object.id = id;
         },
-        objectToFB: (User object, fb.Builder fbb) {
+        objectToFB: (Login object, fb.Builder fbb) {
           final usernameOffset = fbb.writeString(object.username);
           final passwordOffset = fbb.writeString(object.password);
           fbb.startTable(4);
@@ -170,12 +300,105 @@ ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
-          final object = User(
+          final object = Login(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               username: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
               password: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''));
+
+          return object;
+        }),
+    TransactionDetail: EntityDefinition<TransactionDetail>(
+        model: _entities[2],
+        toOneRelations: (TransactionDetail object) => [],
+        toManyRelations: (TransactionDetail object) => {},
+        getId: (TransactionDetail object) => object.id,
+        setId: (TransactionDetail object, int id) {
+          object.id = id;
+        },
+        objectToFB: (TransactionDetail object, fb.Builder fbb) {
+          final documentCodeOffset = fbb.writeString(object.documentCode);
+          final documentNumberOffset = fbb.writeString(object.documentNumber);
+          final productCodeOffset = fbb.writeString(object.productCode);
+          final unitOffset = fbb.writeString(object.unit);
+          final currencyOffset = fbb.writeString(object.currency);
+          fbb.startTable(10);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, documentCodeOffset);
+          fbb.addOffset(2, documentNumberOffset);
+          fbb.addOffset(3, productCodeOffset);
+          fbb.addInt64(4, object.price);
+          fbb.addInt64(5, object.quantity);
+          fbb.addOffset(6, unitOffset);
+          fbb.addInt64(7, object.subTotal);
+          fbb.addOffset(8, currencyOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = TransactionDetail(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              documentCode: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              documentNumber: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              productCode: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              price:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              quantity:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              unit: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              subTotal:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0),
+              currency: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 20, ''));
+
+          return object;
+        }),
+    TransactionHeader: EntityDefinition<TransactionHeader>(
+        model: _entities[3],
+        toOneRelations: (TransactionHeader object) => [],
+        toManyRelations: (TransactionHeader object) => {},
+        getId: (TransactionHeader object) => object.id,
+        setId: (TransactionHeader object, int id) {
+          object.id = id;
+        },
+        objectToFB: (TransactionHeader object, fb.Builder fbb) {
+          final documentCodeOffset = fbb.writeString(object.documentCode);
+          final documentNumberOffset = fbb.writeString(object.documentNumber);
+          final userOffset = fbb.writeString(object.user);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, documentCodeOffset);
+          fbb.addOffset(2, documentNumberOffset);
+          fbb.addOffset(3, userOffset);
+          fbb.addInt64(4, object.total);
+          fbb.addInt64(5, object.date.millisecondsSinceEpoch);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = TransactionHeader(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              documentCode: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              documentNumber: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              user: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              total:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              date: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0)));
 
           return object;
         })
@@ -189,30 +412,110 @@ class Product_ {
   /// see [Product.id]
   static final id = QueryIntegerProperty<Product>(_entities[0].properties[0]);
 
-  /// see [Product.name]
-  static final name = QueryStringProperty<Product>(_entities[0].properties[1]);
-
   /// see [Product.price]
   static final price =
-      QueryIntegerProperty<Product>(_entities[0].properties[2]);
+      QueryIntegerProperty<Product>(_entities[0].properties[1]);
 
-  /// see [Product.discountPrice]
-  static final discountPrice =
-      QueryIntegerProperty<Product>(_entities[0].properties[3]);
+  /// see [Product.productCode]
+  static final productCode =
+      QueryStringProperty<Product>(_entities[0].properties[2]);
 
-  /// see [Product.isDiscount]
-  static final isDiscount =
-      QueryBooleanProperty<Product>(_entities[0].properties[4]);
+  /// see [Product.productName]
+  static final productName =
+      QueryStringProperty<Product>(_entities[0].properties[3]);
+
+  /// see [Product.currency]
+  static final currency =
+      QueryStringProperty<Product>(_entities[0].properties[4]);
+
+  /// see [Product.discount]
+  static final discount =
+      QueryIntegerProperty<Product>(_entities[0].properties[5]);
+
+  /// see [Product.dimension]
+  static final dimension =
+      QueryStringProperty<Product>(_entities[0].properties[6]);
+
+  /// see [Product.unit]
+  static final unit = QueryStringProperty<Product>(_entities[0].properties[7]);
 }
 
-/// [User] entity fields to define ObjectBox queries.
-class User_ {
-  /// see [User.id]
-  static final id = QueryIntegerProperty<User>(_entities[1].properties[0]);
+/// [Login] entity fields to define ObjectBox queries.
+class Login_ {
+  /// see [Login.id]
+  static final id = QueryIntegerProperty<Login>(_entities[1].properties[0]);
 
-  /// see [User.username]
-  static final username = QueryStringProperty<User>(_entities[1].properties[1]);
+  /// see [Login.username]
+  static final username =
+      QueryStringProperty<Login>(_entities[1].properties[1]);
 
-  /// see [User.password]
-  static final password = QueryStringProperty<User>(_entities[1].properties[2]);
+  /// see [Login.password]
+  static final password =
+      QueryStringProperty<Login>(_entities[1].properties[2]);
+}
+
+/// [TransactionDetail] entity fields to define ObjectBox queries.
+class TransactionDetail_ {
+  /// see [TransactionDetail.id]
+  static final id =
+      QueryIntegerProperty<TransactionDetail>(_entities[2].properties[0]);
+
+  /// see [TransactionDetail.documentCode]
+  static final documentCode =
+      QueryStringProperty<TransactionDetail>(_entities[2].properties[1]);
+
+  /// see [TransactionDetail.documentNumber]
+  static final documentNumber =
+      QueryStringProperty<TransactionDetail>(_entities[2].properties[2]);
+
+  /// see [TransactionDetail.productCode]
+  static final productCode =
+      QueryStringProperty<TransactionDetail>(_entities[2].properties[3]);
+
+  /// see [TransactionDetail.price]
+  static final price =
+      QueryIntegerProperty<TransactionDetail>(_entities[2].properties[4]);
+
+  /// see [TransactionDetail.quantity]
+  static final quantity =
+      QueryIntegerProperty<TransactionDetail>(_entities[2].properties[5]);
+
+  /// see [TransactionDetail.unit]
+  static final unit =
+      QueryStringProperty<TransactionDetail>(_entities[2].properties[6]);
+
+  /// see [TransactionDetail.subTotal]
+  static final subTotal =
+      QueryIntegerProperty<TransactionDetail>(_entities[2].properties[7]);
+
+  /// see [TransactionDetail.currency]
+  static final currency =
+      QueryStringProperty<TransactionDetail>(_entities[2].properties[8]);
+}
+
+/// [TransactionHeader] entity fields to define ObjectBox queries.
+class TransactionHeader_ {
+  /// see [TransactionHeader.id]
+  static final id =
+      QueryIntegerProperty<TransactionHeader>(_entities[3].properties[0]);
+
+  /// see [TransactionHeader.documentCode]
+  static final documentCode =
+      QueryStringProperty<TransactionHeader>(_entities[3].properties[1]);
+
+  /// see [TransactionHeader.documentNumber]
+  static final documentNumber =
+      QueryStringProperty<TransactionHeader>(_entities[3].properties[2]);
+
+  /// see [TransactionHeader.user]
+  static final user =
+      QueryStringProperty<TransactionHeader>(_entities[3].properties[3]);
+
+  /// see [TransactionHeader.total]
+  static final total =
+      QueryIntegerProperty<TransactionHeader>(_entities[3].properties[4]);
+
+  /// see [TransactionHeader.date]
+  static final date =
+      QueryIntegerProperty<TransactionHeader>(_entities[3].properties[5]);
 }

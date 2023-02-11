@@ -26,19 +26,19 @@ class ProductScreen extends StatelessWidget {
                           itemCount: state.products.length,
                           itemBuilder: (context, index) {
                             return ProductItem(
-                                productName: state.products[index].name,
-                                isDiscount:
-                                    state.products[index].isDiscount ?? false,
-                                productRealPrice: state.products[index].price,
-                                productDiscountPrice:
-                                    state.products[index].discountPrice,
+                                productName: state.products[index].productName,
+                                isDiscount: state.products[index].discount != 0,
+                                price: state.products[index].price,
+                                discount: state.products[index].discount,
                                 onTap: () => bloc
                                     .add(DetailProduct(state.products[index])),
                                 onBuy: () {
                                   bloc.add(AddProduct(state.products[index]));
                                   var snackBar = SnackBar(
-                                      content: Text(
-                                          "${state.products[index].name} Berhasil ditambahkan!"));
+                                    content: Text(
+                                        "${state.products[index].productName} Berhasil ditambahkan!"),
+                                    duration: const Duration(seconds: 1),
+                                  );
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
                                 });

@@ -1,8 +1,7 @@
-import 'dart:developer';
-
-import 'package:penjualan_app/app/login/bloc/login_bloc.dart';
 import 'package:penjualan_app/models/product.dart';
-import 'package:penjualan_app/models/user.dart';
+import 'package:penjualan_app/models/login.dart';
+import 'package:penjualan_app/models/transaction_detail.dart';
+import 'package:penjualan_app/models/transaction_header.dart';
 
 import 'objectbox.g.dart';
 
@@ -44,8 +43,8 @@ class DBHelper {
   }
 
   /// Get user
-  static Future<User?> getUser(Store store, String username) async {
-    List<User> logins = store.box<User>().getAll();
+  static Future<Login?> getUser(Store store, String username) async {
+    List<Login> logins = store.box<Login>().getAll();
     try {
       return logins.firstWhere((element) => element.username == username);
     } catch (e) {
@@ -55,27 +54,65 @@ class DBHelper {
 
   /// Put user
   static Future<int> putUser(Store store) async {
-    return store.box<User>().put(User(username: 'admin', password: 'admin'));
+    return store.box<Login>().put(Login(username: 'admin', password: 'admin'));
   }
 
   /// Put product
   static Future<List<int>> putProduct(Store store) async {
     return store.box<Product>().putMany([
       Product(
-          name: 'So Klin Pewangi',
-          price: 15000,
-          discountPrice: 13500,
-          isDiscount: true),
-      Product(name: 'So Klin Liquid', price: 18000),
-      Product(name: 'Giv Biru', price: 11000),
-      Product(name: 'Giv Kuning', price: 10000)
+        productCode: "P001",
+        unit: "PCS",
+        currency: "IDR",
+        dimension: "10cm x 15 cm",
+        productName: 'So Klin Pewangi',
+        price: 15000,
+        discount: 1500,
+      ),
+      Product(
+        productCode: "P002",
+        unit: "PCS",
+        currency: "IDR",
+        dimension: "15cm x 25 cm",
+        productName: 'So Klin Liquid',
+        price: 18000,
+        discount: 0,
+      ),
+      Product(
+        productCode: "P003",
+        unit: "PCS",
+        currency: "IDR",
+        dimension: "35cm x 15 cm",
+        productName: 'Giv Biru',
+        price: 11000,
+        discount: 0,
+      ),
+      Product(
+        productCode: "P004",
+        unit: "PCS",
+        currency: "IDR",
+        dimension: "15cm x 15 cm",
+        productName: 'Giv Kuning',
+        price: 10000,
+        discount: 0,
+      ),
     ]);
+  }
+
+  /// Put transactions
+  static Future putTransaction(Store store,
+      {required List<TransactionDetail> transactionDetails,
+      required TransactionHeader transactionHeader}) async {
+    store.box<TransactionDetail>().putMany(transactionDetails);
+    store.box<TransactionHeader>().put(transactionHeader);
   }
 
   /// truncate data
   static Future<bool> truncateData(Store store) async {
-    store.box<User>().removeAll();
+    store.box<Login>().removeAll();
     store.box<Product>().removeAll();
+    store.box<TransactionDetail>().removeAll();
+    store.box<TransactionHeader>().removeAll();
     return true;
   }
 }

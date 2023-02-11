@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:penjualan_app/app/checkout/bloc/checkout_bloc.dart';
+import 'package:penjualan_app/models/transaction_detail.dart';
+import 'package:penjualan_app/models/transaction_header.dart';
 
 import '../../models/product.dart';
 
 class CheckoutScreen extends StatefulWidget {
+  final List<TransactionDetail> transactions;
   final List<Product> products;
-  const CheckoutScreen({required this.products, super.key});
+  const CheckoutScreen(
+      {required this.transactions, required this.products, super.key});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  List<TransactionDetail> transactions = [];
   List<Product> products = [];
   late int totalPrice;
 
   @override
   void initState() {
+    transactions = widget.transactions;
     products = widget.products;
     countTotalPrice();
     super.initState();
@@ -23,18 +31,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   void countTotalPrice() {
     int tmpTotal = 0;
-    for (var element in products) {
-      if (element.discountPrice != null) {
-        tmpTotal += element.discountPrice!;
-      } else {
-        tmpTotal += element.price;
-      }
+    for (var element in transactions) {
+      tmpTotal += element.quantity > 1
+          ? element.price * element.quantity
+          : element.price;
     }
     totalPrice = tmpTotal;
   }
 
   @override
   Widget build(BuildContext context) {
+    CheckoutBloc bloc = BlocProvider.of<CheckoutBloc>(context);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -68,10 +75,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: widget.products.length,
+                itemCount: widget.transactions.length,
                 itemBuilder: (context, index) {
                   return buildItem(
-                      index: index, product: widget.products[index]);
+                      index: index,
+                      transaction: widget.transactions[index],
+                      product: widget.products.firstWhere((element) =>
+                          element.productCode ==
+                          widget.transactions[index].productCode));
                 }),
           ),
           const SizedBox(height: 20),
@@ -79,7 +90,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             width: 150,
             height: 40,
             child: ElevatedButton(
-              onPressed: () => 1,
+              onPressed: () {
+                bloc.add(Checkout(
+                    transactions,
+                    TransactionHeader(
+                        documentCode: transactions[0].documentCode,
+                        documentNumber: transactions[0].documentNumber,
+                        user: "admin",
+                        total: totalPrice,
+                        date: DateTime.now())));
+                var snackBar = const SnackBar(
+                  content: Text("Transaksi Berhasil"),
+                  duration: Duration(seconds: 1),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
               style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
               child: const Text(
                 'CONFIRM',
@@ -92,7 +117,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Padding buildItem({required int index, required Product product}) {
+  Padding buildItem({
+    required int index,
+    required TransactionDetail transaction,
+    required Product product,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 18),
       child: Row(
@@ -108,7 +137,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                product.name,
+                product.productName,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
@@ -124,11 +153,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(border: Border.all()),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '1',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        transaction.quantity.toString(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -155,9 +184,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    product.discountPrice != null
-                        ? "Rp. ${product.discountPrice},-"
-                        : "Rp. ${product.price},-",
+                    "Rp. ${transaction.subTotal},-",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],

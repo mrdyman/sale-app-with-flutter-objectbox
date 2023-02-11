@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 200,
               height: 40,
               child: ElevatedButton(
-                onPressed: () => bloc.add(Login(
+                onPressed: () => bloc.add(SignIn(
                     username: bloc.state.usernameTEC.text,
                     password: bloc.state.passwordTEC.text)),
                 style: ElevatedButton.styleFrom(shape: const StadiumBorder()),

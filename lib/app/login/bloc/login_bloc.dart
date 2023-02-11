@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:penjualan_app/app/product/bloc/product_bloc.dart';
 import 'package:penjualan_app/app/product/product_screen.dart';
 import 'package:penjualan_app/models/helper.dart';
-import 'package:penjualan_app/models/user.dart';
+import 'package:penjualan_app/models/login.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -14,7 +14,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     BuildContext context = ContextHolder.currentContext;
-    on<Login>((event, emit) async {
+    on<SignIn>((event, emit) async {
       bool loginSuccess =
           await isGranted(username: event.username, password: event.password);
       if (loginSuccess && context.mounted) {
@@ -34,7 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<bool> isGranted(
       {required String username, required String password}) async {
-    User? user = await DBHelper.getUser(Objectbox.store_, username);
+    Login? user = await DBHelper.getUser(Objectbox.store_, username);
     return user == null ? false : true;
   }
 }

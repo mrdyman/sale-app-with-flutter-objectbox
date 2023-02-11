@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:penjualan_app/app/checkout/bloc/checkout_bloc.dart';
 import 'package:penjualan_app/models/transaction_detail.dart';
+import 'package:penjualan_app/models/transaction_header.dart';
 
 import '../../models/product.dart';
 
@@ -38,6 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CheckoutBloc bloc = BlocProvider.of<CheckoutBloc>(context);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -86,7 +90,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             width: 150,
             height: 40,
             child: ElevatedButton(
-              onPressed: () => 1,
+              onPressed: () {
+                bloc.add(Checkout(
+                    transactions,
+                    TransactionHeader(
+                        documentCode: transactions[0].documentCode,
+                        documentNumber: transactions[0].documentNumber,
+                        user: "admin",
+                        total: totalPrice,
+                        date: DateTime.now())));
+                var snackBar = const SnackBar(
+                  content: Text("Transaksi Berhasil"),
+                  duration: Duration(seconds: 1),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
               style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
               child: const Text(
                 'CONFIRM',

@@ -1,5 +1,7 @@
 import 'package:penjualan_app/models/product.dart';
 import 'package:penjualan_app/models/login.dart';
+import 'package:penjualan_app/models/transaction_detail.dart';
+import 'package:penjualan_app/models/transaction_header.dart';
 
 import 'objectbox.g.dart';
 
@@ -97,10 +99,20 @@ class DBHelper {
     ]);
   }
 
+  /// Put transactions
+  static Future putTransaction(Store store,
+      {required List<TransactionDetail> transactionDetails,
+      required TransactionHeader transactionHeader}) async {
+    store.box<TransactionDetail>().putMany(transactionDetails);
+    store.box<TransactionHeader>().put(transactionHeader);
+  }
+
   /// truncate data
   static Future<bool> truncateData(Store store) async {
     store.box<Login>().removeAll();
     store.box<Product>().removeAll();
+    store.box<TransactionDetail>().removeAll();
+    store.box<TransactionHeader>().removeAll();
     return true;
   }
 }

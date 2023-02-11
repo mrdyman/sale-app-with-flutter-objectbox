@@ -1,6 +1,7 @@
 import 'package:context_holder/context_holder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:penjualan_app/app/checkout/bloc/checkout_bloc.dart';
 import 'package:penjualan_app/app/checkout/checkout_screen.dart';
 import 'package:penjualan_app/app/login/login_screen.dart';
 import 'package:penjualan_app/app/product_detail/product_detail_screen.dart';
@@ -67,9 +68,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => CheckoutScreen(
-                  transactions: transactions,
-                  products: products,
+            builder: (context) => BlocProvider<CheckoutBloc>(
+                  create: (context) => CheckoutBloc(),
+                  child: CheckoutScreen(
+                    transactions: transactions,
+                    products: products,
+                  ),
                 )));
   }
 

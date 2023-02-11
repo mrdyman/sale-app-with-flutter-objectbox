@@ -35,8 +35,10 @@ class ProductScreen extends StatelessWidget {
                                 onBuy: () {
                                   bloc.add(AddProduct(state.products[index]));
                                   var snackBar = SnackBar(
-                                      content: Text(
-                                          "${state.products[index].productName} Berhasil ditambahkan!"));
+                                    content: Text(
+                                        "${state.products[index].productName} Berhasil ditambahkan!"),
+                                    duration: const Duration(seconds: 1),
+                                  );
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
                                 });

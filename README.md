@@ -5,7 +5,7 @@ Tech Stack :
 - ObjectBox
 
 # App ScreenShoots :
-<img src="https://user-images.githubusercontent.com/55882627/218243167-3b713049-e1fd-4f53-888c-8824b983fbdd.jpg" width=40% height=40%> <img src="https://user-images.githubusercontent.com/55882627/218243168-5f60ff55-c496-4175-8f8f-4fa2f9fadfd1.jpg" width=40% height=40%>
+<img src="https://user-images.githubusercontent.com/55882627/218243167-3b713049-e1fd-4f53-888c-8824b983fbdd.jpg" width=30% height=30%> <img src="https://user-images.githubusercontent.com/55882627/218243168-5f60ff55-c496-4175-8f8f-4fa2f9fadfd1.jpg" width=40% height=40%>
 <img src="https://user-images.githubusercontent.com/55882627/218243191-67f1b939-402f-4c78-8481-776521d765ef.jpg" width=40% height=40%>
 <img src="https://user-images.githubusercontent.com/55882627/218243196-4a741a3b-c4fb-4a69-a6b7-649fbbf3df63.jpg" width=40% height=40%>
 

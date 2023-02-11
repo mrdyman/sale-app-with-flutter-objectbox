@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
   final String productName;
-  final int? productDiscountPrice;
-  final int productRealPrice;
+  final int price;
+  final int discount;
   final bool isDiscount;
   final Function() onTap;
   final Function() onBuy;
   const ProductItem({
     required this.productName,
-    this.productDiscountPrice,
-    required this.productRealPrice,
+    required this.price,
+    required this.discount,
     required this.isDiscount,
     required this.onTap,
     required this.onBuy,
@@ -43,13 +43,11 @@ class ProductItem extends StatelessWidget {
               const SizedBox(height: 10),
               if (isDiscount)
                 Text(
-                  "Rp. $productRealPrice,-",
+                  "Rp. $price,-",
                   style:
                       const TextStyle(decoration: TextDecoration.lineThrough),
                 ),
-              Text(isDiscount
-                  ? "Rp. $productDiscountPrice,-"
-                  : "Rp. $productRealPrice,-"),
+              Text(isDiscount ? "Rp. ${price - discount},-" : "Rp. $price,-"),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => onBuy(),

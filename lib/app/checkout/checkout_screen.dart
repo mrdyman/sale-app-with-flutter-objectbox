@@ -24,11 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void countTotalPrice() {
     int tmpTotal = 0;
     for (var element in products) {
-      if (element.discountPrice != null) {
-        tmpTotal += element.discountPrice!;
-      } else {
-        tmpTotal += element.price;
-      }
+      tmpTotal += element.price - element.discount;
     }
     totalPrice = tmpTotal;
   }
@@ -108,7 +104,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                product.name,
+                product.productName,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
@@ -155,9 +151,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    product.discountPrice != null
-                        ? "Rp. ${product.discountPrice},-"
-                        : "Rp. ${product.price},-",
+                    "Rp. ${product.price - product.discount},-",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
